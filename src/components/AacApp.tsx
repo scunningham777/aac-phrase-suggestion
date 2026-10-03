@@ -1,12 +1,17 @@
 "use client";
 
-import { useState, type ChangeEvent } from "react";
+import { useMemo, useState, type ChangeEvent } from "react";
 import BoardGrid from "./BoardGrid";
 import MessageBar from "./MessageBar";
-import { buttonText, ObfParseError, parseObf } from "@/lib/obf";
+import SuggestionBar from "./SuggestionBar";
+import { boardVocabulary, buttonText, ObfParseError, parseObf } from "@/lib/obf";
 import { speak } from "@/lib/speech";
-import type { ObfBoard, ObfButton } from "@/lib/types";
+import { useSuggestions } from "@/lib/useSuggestions";
+import type { ConversationTurn, ObfBoard, ObfButton } from "@/lib/types";
 import styles from "./AacApp.module.css";
+
+// Conversation history arrives with demo scenario mode; until then, none.
+const NO_HISTORY: ConversationTurn[] = [];
 
 interface AacAppProps {
   initialBoard: ObfBoard;
@@ -18,10 +23,16 @@ export default function AacApp({ initialBoard }: AacAppProps) {
   const [speakOnTap, setSpeakOnTap] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
 
-  function handleSelect(button: ObfButton) {
-    const text = buttonText(button);
+  const vocabulary = useMemo(() => boardVocabulary(board), [board]);
+  const suggestions = useSuggestions(tokens, NO_HISTORY, vocabulary);
+
+  function addToMessage(text: string) {
     setTokens((prev) => [...prev, text]);
     if (speakOnTap) speak(text);
+  }
+
+  function handleSelect(button: ObfButton) {
+    addToMessage(buttonText(button));
   }
 
   async function handleFile(e: ChangeEvent<HTMLInputElement>) {
@@ -73,7 +84,7 @@ export default function AacApp({ initialBoard }: AacAppProps) {
         onClear={() => setTokens([])}
       />
 
-      {/* Suggestion chips (week 4) render here, between the message and the board. */}
+      <SuggestionBar {...suggestions} onSelect={addToMessage} />
 
       <BoardGrid board={board} onSelect={handleSelect} />
     </main>
