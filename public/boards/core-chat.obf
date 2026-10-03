@@ -1,0 +1,193 @@
+{
+  "format": "open-board-0.1",
+  "id": "core-chat",
+  "locale": "en",
+  "name": "Core Chat (sample)",
+  "description_html": "Hand-built 24-word core vocabulary board for demoing contextual phrase suggestion. Colors follow the modified Fitzgerald Key.",
+  "buttons": [
+    {
+      "id": "i",
+      "label": "I",
+      "background_color": "rgb(255, 255, 170)",
+      "border_color": "rgb(140, 140, 140)"
+    },
+    {
+      "id": "you",
+      "label": "you",
+      "background_color": "rgb(255, 255, 170)",
+      "border_color": "rgb(140, 140, 140)"
+    },
+    {
+      "id": "want",
+      "label": "want",
+      "background_color": "rgb(204, 255, 204)",
+      "border_color": "rgb(140, 140, 140)"
+    },
+    {
+      "id": "need",
+      "label": "need",
+      "background_color": "rgb(204, 255, 204)",
+      "border_color": "rgb(140, 140, 140)"
+    },
+    {
+      "id": "like",
+      "label": "like",
+      "background_color": "rgb(204, 255, 204)",
+      "border_color": "rgb(140, 140, 140)"
+    },
+    {
+      "id": "go",
+      "label": "go",
+      "background_color": "rgb(204, 255, 204)",
+      "border_color": "rgb(140, 140, 140)"
+    },
+    {
+      "id": "eat",
+      "label": "eat",
+      "background_color": "rgb(204, 255, 204)",
+      "border_color": "rgb(140, 140, 140)"
+    },
+    {
+      "id": "drink",
+      "label": "drink",
+      "background_color": "rgb(204, 255, 204)",
+      "border_color": "rgb(140, 140, 140)"
+    },
+    {
+      "id": "help",
+      "label": "help",
+      "background_color": "rgb(204, 255, 204)",
+      "border_color": "rgb(140, 140, 140)"
+    },
+    {
+      "id": "feel",
+      "label": "feel",
+      "background_color": "rgb(204, 255, 204)",
+      "border_color": "rgb(140, 140, 140)"
+    },
+    {
+      "id": "more",
+      "label": "more",
+      "background_color": "rgb(170, 204, 255)",
+      "border_color": "rgb(140, 140, 140)"
+    },
+    {
+      "id": "stop",
+      "label": "stop",
+      "background_color": "rgb(255, 170, 170)",
+      "border_color": "rgb(140, 140, 140)"
+    },
+    {
+      "id": "water",
+      "label": "water",
+      "background_color": "rgb(255, 221, 170)",
+      "border_color": "rgb(140, 140, 140)"
+    },
+    {
+      "id": "food",
+      "label": "food",
+      "background_color": "rgb(255, 221, 170)",
+      "border_color": "rgb(140, 140, 140)"
+    },
+    {
+      "id": "bathroom",
+      "label": "bathroom",
+      "background_color": "rgb(255, 221, 170)",
+      "border_color": "rgb(140, 140, 140)"
+    },
+    {
+      "id": "good",
+      "label": "good",
+      "background_color": "rgb(170, 204, 255)",
+      "border_color": "rgb(140, 140, 140)"
+    },
+    {
+      "id": "bad",
+      "label": "bad",
+      "background_color": "rgb(170, 204, 255)",
+      "border_color": "rgb(140, 140, 140)"
+    },
+    {
+      "id": "tired",
+      "label": "tired",
+      "background_color": "rgb(170, 204, 255)",
+      "border_color": "rgb(140, 140, 140)"
+    },
+    {
+      "id": "what",
+      "label": "what",
+      "background_color": "rgb(221, 204, 255)",
+      "border_color": "rgb(140, 140, 140)"
+    },
+    {
+      "id": "where",
+      "label": "where",
+      "background_color": "rgb(221, 204, 255)",
+      "border_color": "rgb(140, 140, 140)"
+    },
+    {
+      "id": "yes",
+      "label": "yes",
+      "background_color": "rgb(255, 204, 221)",
+      "border_color": "rgb(140, 140, 140)"
+    },
+    {
+      "id": "no",
+      "label": "no",
+      "background_color": "rgb(255, 170, 170)",
+      "border_color": "rgb(140, 140, 140)"
+    },
+    {
+      "id": "please",
+      "label": "please",
+      "background_color": "rgb(255, 204, 221)",
+      "border_color": "rgb(140, 140, 140)"
+    },
+    {
+      "id": "thank-you",
+      "label": "thank you",
+      "background_color": "rgb(255, 204, 221)",
+      "border_color": "rgb(140, 140, 140)"
+    }
+  ],
+  "grid": {
+    "rows": 4,
+    "columns": 6,
+    "order": [
+      [
+        "i",
+        "you",
+        "want",
+        "need",
+        "like",
+        "go"
+      ],
+      [
+        "eat",
+        "drink",
+        "help",
+        "feel",
+        "more",
+        "stop"
+      ],
+      [
+        "water",
+        "food",
+        "bathroom",
+        "good",
+        "bad",
+        "tired"
+      ],
+      [
+        "what",
+        "where",
+        "yes",
+        "no",
+        "please",
+        "thank-you"
+      ]
+    ]
+  },
+  "images": [],
+  "sounds": []
+}
