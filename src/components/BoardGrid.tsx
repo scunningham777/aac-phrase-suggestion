@@ -41,12 +41,16 @@ function rowEdge(board: ObfBoard, r: number, fromEnd: boolean): Pos | null {
 }
 
 // An ARIA grid with a roving tabindex: the board is a single Tab stop and the
-// arrow keys move between buttons. The grid role also tells screen readers
-// such as NVDA to switch to focus mode, so arrows reach this handler instead
-// of moving the screen reader's own reading cursor.
+// arrow keys move between cells.
+//
+// The gridcell itself is the focusable, activatable element – not a <button>
+// inside it. NVDA switches to focus mode (so arrow keys reach this handler
+// instead of moving its own reading cursor) when a focusable table cell gets
+// focus, but a focused button keeps it in browse mode, even inside a grid.
+// See shouldPassThrough in NVDA's source/browseMode.py.
 export default function BoardGrid({ board, onSelect }: BoardGridProps) {
   const byId = new Map(board.buttons.map((b) => [b.id, b]));
-  const buttonEls = useRef(new Map<string, HTMLButtonElement>());
+  const cellEls = useRef(new Map<string, HTMLDivElement>());
 
   // The one button that is in the Tab order; reset when a new board loads.
   const [nav, setNav] = useState(() => ({ board, active: edgeButton(board) }));
@@ -59,10 +63,17 @@ export default function BoardGrid({ board, onSelect }: BoardGridProps) {
   function moveTo(next: Pos | null) {
     if (!next) return;
     setNav({ board, active: next });
-    buttonEls.current.get(posKey(next))?.focus();
+    cellEls.current.get(posKey(next))?.focus();
   }
 
-  function handleKeyDown(e: KeyboardEvent, from: Pos) {
+  function handleKeyDown(e: KeyboardEvent, from: Pos, button: ObfButton) {
+    // Cells aren't native buttons, so activate on Enter/Space ourselves.
+    // Ignore auto-repeat so a held key can't add the word over and over.
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      if (!e.repeat) onSelect(button);
+      return;
+    }
     const keys: Record<string, () => Pos | null> = {
       ArrowRight: () => step(board, from, 0, 1),
       ArrowLeft: () => step(board, from, 0, -1),
@@ -96,35 +107,35 @@ export default function BoardGrid({ board, onSelect }: BoardGridProps) {
             const button = id ? byId.get(id) : undefined;
             const pos = { r, c };
             const isActive = active?.r === r && active?.c === c;
+            if (!button) return <div key={c} role="gridcell" className={styles.empty} />;
             return (
-              <div key={c} role="gridcell" className={styles.gridcell}>
-                {button && (
-                  <button
-                    ref={(el) => {
-                      if (el) buttonEls.current.set(posKey(pos), el);
-                      else buttonEls.current.delete(posKey(pos));
-                    }}
-                    type="button"
-                    className={styles.cell}
-                    style={{
-                      backgroundColor: button.background_color,
-                      borderColor: button.border_color,
-                    }}
-                    tabIndex={isActive ? 0 : -1}
-                    onClick={() => onSelect(button)}
-                    // Clicking or tapping a button makes it the Tab stop too.
-                    onFocus={() => !isActive && setNav({ board, active: pos })}
-                    onKeyDown={(e) => handleKeyDown(e, pos)}
-                  >
-                    {button.image_url && (
-                      // OBF images are arbitrary remote/data URLs, so next/image's
-                      // optimization pipeline doesn't apply.
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={button.image_url} alt="" className={styles.image} />
-                    )}
-                    <span className={styles.label}>{button.label}</span>
-                  </button>
+              <div
+                key={c}
+                role="gridcell"
+                aria-label={button.label}
+                ref={(el) => {
+                  if (el) cellEls.current.set(posKey(pos), el);
+                  else cellEls.current.delete(posKey(pos));
+                }}
+                className={styles.cell}
+                style={{
+                  backgroundColor: button.background_color,
+                  borderColor: button.border_color,
+                }}
+                tabIndex={isActive ? 0 : -1}
+                // Also fires when NVDA activates the cell from browse mode.
+                onClick={() => onSelect(button)}
+                // Clicking or tapping a cell makes it the Tab stop too.
+                onFocus={() => !isActive && setNav({ board, active: pos })}
+                onKeyDown={(e) => handleKeyDown(e, pos, button)}
+              >
+                {button.image_url && (
+                  // OBF images are arbitrary remote/data URLs, so next/image's
+                  // optimization pipeline doesn't apply.
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={button.image_url} alt="" className={styles.image} />
                 )}
+                <span className={styles.label}>{button.label}</span>
               </div>
             );
           })}
