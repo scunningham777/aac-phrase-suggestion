@@ -1,17 +1,27 @@
 .bar {
+  /* One row that scrolls sideways rather than wrapping: a fixed height means
+     new suggestions never push the board around or squeeze it on phones. */
+  flex-shrink: 0;
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   gap: 8px;
-  min-height: 52px;
+  min-height: 58px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  /* Room for the focus ring, which the scroll container would otherwise clip. */
+  padding: 5px;
+  margin-inline: -5px;
 }
 
 .status {
   color: var(--muted);
   font-size: 15px;
+  white-space: nowrap;
 }
 
 .chip {
+  flex-shrink: 0;
+  white-space: nowrap;
   min-height: 48px;
   padding: 0 18px;
   border: 2px solid var(--accent);

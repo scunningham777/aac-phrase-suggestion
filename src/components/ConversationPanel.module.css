@@ -1,4 +1,5 @@
 .panel {
+  flex-shrink: 0;
   border: 1px solid var(--border);
   border-radius: 12px;
   background: var(--surface);
@@ -10,7 +11,8 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  max-height: 180px;
+  /* Scale with screen height so the board still fits on phones. */
+  max-height: min(180px, 15dvh);
   overflow-y: auto;
   padding: 12px;
 }

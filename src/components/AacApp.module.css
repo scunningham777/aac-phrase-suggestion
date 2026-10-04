@@ -10,7 +10,12 @@
   gap: 14px;
 }
 
+/* Everything above the board keeps its natural height (flex-shrink: 0); the
+   board alone flexes to fill what's left. Without this, a section with a
+   min-height – like the suggestion row – gets squeezed and its wrapped
+   content spills behind the board. */
 .header {
+  flex-shrink: 0;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -61,6 +66,7 @@
 }
 
 .error {
+  flex-shrink: 0;
   padding: 10px 14px;
   border-radius: 8px;
   background: var(--error-bg);
