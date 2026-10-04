@@ -12,7 +12,13 @@ export default function BoardGrid({ board, onSelect }: BoardGridProps) {
   return (
     <div
       className={styles.grid}
-      style={{ gridTemplateColumns: `repeat(${board.grid.columns}, minmax(0, 1fr))` }}
+      style={{
+        gridTemplateColumns: `repeat(${board.grid.columns}, minmax(0, 1fr))`,
+        // Rows share whatever height is left on screen (down to a touch-sized
+        // minimum), so every button is reachable without scrolling.
+        gridTemplateRows: `repeat(${board.grid.rows}, minmax(56px, 1fr))`,
+        maxHeight: `${board.grid.rows * 150}px`,
+      }}
       role="group"
       aria-label={board.name}
     >

@@ -32,7 +32,7 @@ Open http://localhost:3000.
 ## Project layout
 
 ```
-public/boards/core-chat.obf   sample 24-word core vocabulary board
+public/boards/core-chat.obf   sample 30-word core vocabulary board
 src/lib/obf.ts                raw .obf JSON → normalized ObfBoard
 src/lib/speech.ts             Web Speech API wrapper
 src/lib/types.ts              data model from the spec

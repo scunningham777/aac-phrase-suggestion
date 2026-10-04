@@ -3,7 +3,7 @@
   "id": "core-chat",
   "locale": "en",
   "name": "Core Chat (sample)",
-  "description_html": "Hand-built 24-word core vocabulary board for demoing contextual phrase suggestion. Colors follow the modified Fitzgerald Key.",
+  "description_html": "Hand-built 30-word core vocabulary board for demoing contextual phrase suggestion. Colors follow the modified Fitzgerald Key.",
   "buttons": [
     {
       "id": "i",
@@ -148,10 +148,46 @@
       "label": "thank you",
       "background_color": "rgb(255, 204, 221)",
       "border_color": "rgb(140, 140, 140)"
+    },
+    {
+      "id": "it",
+      "label": "it",
+      "background_color": "rgb(255, 255, 170)",
+      "border_color": "rgb(140, 140, 140)"
+    },
+    {
+      "id": "that",
+      "label": "that",
+      "background_color": "rgb(255, 255, 170)",
+      "border_color": "rgb(140, 140, 140)"
+    },
+    {
+      "id": "is",
+      "label": "is",
+      "background_color": "rgb(204, 255, 204)",
+      "border_color": "rgb(140, 140, 140)"
+    },
+    {
+      "id": "do",
+      "label": "do",
+      "background_color": "rgb(204, 255, 204)",
+      "border_color": "rgb(140, 140, 140)"
+    },
+    {
+      "id": "to",
+      "label": "to",
+      "background_color": "rgb(255, 255, 255)",
+      "border_color": "rgb(140, 140, 140)"
+    },
+    {
+      "id": "not",
+      "label": "not",
+      "background_color": "rgb(255, 170, 170)",
+      "border_color": "rgb(140, 140, 140)"
     }
   ],
   "grid": {
-    "rows": 4,
+    "rows": 5,
     "columns": 6,
     "order": [
       [
@@ -185,6 +221,14 @@
         "no",
         "please",
         "thank-you"
+      ],
+      [
+        "it",
+        "that",
+        "is",
+        "do",
+        "to",
+        "not"
       ]
     ]
   },

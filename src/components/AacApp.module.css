@@ -2,6 +2,8 @@
   width: 100%;
   max-width: 1100px;
   margin: 0 auto;
+  /* Fixed to the viewport so the board can take exactly the leftover height. */
+  height: 100dvh;
   padding: 16px;
   display: flex;
   flex-direction: column;
