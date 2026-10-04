@@ -29,13 +29,16 @@ export default function ConversationPanel({ history, finished, onRestart }: Conv
           </li>
         ))}
       </ol>
-      {/* Restart is always shown so it never disappears from under keyboard focus. */}
-      <div className={styles.end}>
-        <span>{finished ? "End of scenario" : ""}</span>
-        <button type="button" onClick={onRestart}>
-          Restart
-        </button>
-      </div>
+      {/* Restart only appears once the script is over. Pressing it removes it
+          again, so the parent moves focus to the board (see AacApp). */}
+      {finished && (
+        <div className={styles.end}>
+          <span>End of scenario</span>
+          <button type="button" onClick={onRestart}>
+            Restart
+          </button>
+        </div>
+      )}
     </section>
   );
 }

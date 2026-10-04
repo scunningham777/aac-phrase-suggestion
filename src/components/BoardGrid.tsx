@@ -1,10 +1,16 @@
-import { useRef, useState, type KeyboardEvent } from "react";
+import { useImperativeHandle, useRef, useState, type KeyboardEvent, type Ref } from "react";
 import type { ObfBoard, ObfButton } from "@/lib/types";
 import styles from "./BoardGrid.module.css";
+
+export interface BoardGridHandle {
+  /** Focus the board's current cell (its single Tab stop). */
+  focus: () => void;
+}
 
 interface BoardGridProps {
   board: ObfBoard;
   onSelect: (button: ObfButton) => void;
+  ref?: Ref<BoardGridHandle>;
 }
 
 type Pos = { r: number; c: number };
@@ -48,7 +54,7 @@ function rowEdge(board: ObfBoard, r: number, fromEnd: boolean): Pos | null {
 // instead of moving its own reading cursor) when a focusable table cell gets
 // focus, but a focused button keeps it in browse mode, even inside a grid.
 // See shouldPassThrough in NVDA's source/browseMode.py.
-export default function BoardGrid({ board, onSelect }: BoardGridProps) {
+export default function BoardGrid({ board, onSelect, ref }: BoardGridProps) {
   const byId = new Map(board.buttons.map((b) => [b.id, b]));
   const cellEls = useRef(new Map<string, HTMLDivElement>());
 
@@ -59,6 +65,12 @@ export default function BoardGrid({ board, onSelect }: BoardGridProps) {
     active = edgeButton(board);
     setNav({ board, active });
   }
+
+  useImperativeHandle(
+    ref,
+    () => ({ focus: () => active && cellEls.current.get(posKey(active))?.focus() }),
+    [active],
+  );
 
   function moveTo(next: Pos | null) {
     if (!next) return;
@@ -91,13 +103,7 @@ export default function BoardGrid({ board, onSelect }: BoardGridProps) {
   return (
     <div
       className={styles.grid}
-      style={{
-        gridTemplateColumns: `repeat(${board.grid.columns}, minmax(0, 1fr))`,
-        // Rows share whatever height is left on screen (down to a touch-sized
-        // minimum), so every button is reachable without scrolling.
-        gridTemplateRows: `repeat(${board.grid.rows}, minmax(56px, 1fr))`,
-        maxHeight: `${board.grid.rows * 150}px`,
-      }}
+      style={{ gridTemplateColumns: `repeat(${board.grid.columns}, minmax(0, 1fr))` }}
       role="grid"
       aria-label={board.name}
     >

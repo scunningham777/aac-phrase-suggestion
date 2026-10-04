@@ -1,7 +1,7 @@
 "use client";
 
 import { useId, useMemo, useRef, useState, type ChangeEvent } from "react";
-import BoardGrid from "./BoardGrid";
+import BoardGrid, { type BoardGridHandle } from "./BoardGrid";
 import ConversationPanel from "./ConversationPanel";
 import MessageBar from "./MessageBar";
 import SuggestionBar from "./SuggestionBar";
@@ -29,6 +29,7 @@ export default function AacApp({ initialBoard }: AacAppProps) {
   const announcer = useAnnouncer();
   const menuId = useId();
   const menuRef = useRef<HTMLDivElement>(null);
+  const boardRef = useRef<BoardGridHandle>(null);
 
   // The script is over once every partner line is out and the user has replied.
   const partnerTurns = history.filter((t) => t.speaker === "other").length;
@@ -150,7 +151,12 @@ export default function AacApp({ initialBoard }: AacAppProps) {
         <ConversationPanel
           history={history}
           finished={finished}
-          onRestart={() => startScenario(scenario)}
+          onRestart={() => {
+            startScenario(scenario);
+            // Restart disappears once pressed; put focus on the board, ready
+            // for the reply, rather than letting it fall to the page.
+            boardRef.current?.focus();
+          }}
         />
       )}
 
@@ -165,7 +171,7 @@ export default function AacApp({ initialBoard }: AacAppProps) {
 
       <SuggestionBar {...suggestions} onSelect={addToMessage} />
 
-      <BoardGrid board={board} onSelect={handleSelect} />
+      <BoardGrid ref={boardRef} board={board} onSelect={handleSelect} />
     </main>
   );
 }

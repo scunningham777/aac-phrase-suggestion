@@ -1,14 +1,6 @@
 .grid {
-  flex: 1 1 auto;
-  min-height: 0;
   display: grid;
   gap: 8px;
-}
-
-@media (max-width: 640px) {
-  .grid {
-    gap: 6px;
-  }
 }
 
 /* Each ARIA row spans the full width and reuses the board's columns, so the
@@ -19,12 +11,20 @@
   grid-template-columns: subgrid;
 }
 
+.cell,
 .empty {
+  /* Fixed shape: cells keep their proportions on every screen, and the page
+     scrolls if the board is taller than the screen. */
+  aspect-ratio: 4 / 3;
+  min-height: 64px;
+  /* An explicit width stops min-height from also forcing a minimum width
+     through the aspect ratio (64px tall = 85px wide), which pushed the right
+     column off-screen on phones. Narrow cells just get taller than 4:3. */
+  width: 100%;
   min-width: 0;
 }
 
 .cell {
-  min-width: 0;
   border-radius: 10px;
   display: flex;
   flex-direction: column;

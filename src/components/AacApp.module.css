@@ -2,18 +2,14 @@
   width: 100%;
   max-width: 1100px;
   margin: 0 auto;
-  /* Fixed to the viewport so the board can take exactly the leftover height. */
-  height: 100dvh;
   padding: 16px;
   display: flex;
   flex-direction: column;
   gap: 14px;
 }
 
-/* Everything above the board keeps its natural height (flex-shrink: 0); the
-   board alone flexes to fill what's left. Without this, a section with a
-   min-height – like the suggestion row – gets squeezed and its wrapped
-   content spills behind the board. */
+/* Sections keep their natural height (flex-shrink: 0) so content inside them
+   is never squeezed and drawn over by the section below. */
 .header {
   flex-shrink: 0;
   display: flex;
@@ -105,14 +101,8 @@
   color: var(--error-fg);
 }
 
-/* Phones: one-line header (scenario picker + options menu) and tighter
-   spacing, so the whole board fits without scrolling. */
+/* Phones: a one-line header – scenario picker plus an options menu. */
 @media (max-width: 640px) {
-  .app {
-    padding: 10px;
-    gap: 10px;
-  }
-
   .header {
     flex-wrap: nowrap;
   }

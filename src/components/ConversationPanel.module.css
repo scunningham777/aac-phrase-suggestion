@@ -11,8 +11,7 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  /* Scale with screen height so the board still fits on phones. */
-  max-height: min(180px, 15dvh);
+  max-height: 180px;
   overflow-y: auto;
   padding: 12px;
 }
@@ -67,15 +66,4 @@
   font: inherit;
   font-weight: 600;
   cursor: pointer;
-}
-
-/* Phones: a slimmer footer leaves the board room to fit. */
-@media (max-width: 640px) {
-  .log {
-    padding: 8px;
-  }
-
-  .end {
-    padding: 4px 8px;
-  }
 }
