@@ -5,6 +5,12 @@
   gap: 8px;
 }
 
+@media (max-width: 640px) {
+  .grid {
+    gap: 6px;
+  }
+}
+
 /* Each ARIA row spans the full width and reuses the board's columns, so the
    row wrappers don't change the layout. */
 .row {

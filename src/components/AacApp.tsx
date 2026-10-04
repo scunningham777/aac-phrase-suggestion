@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, type ChangeEvent } from "react";
+import { useId, useMemo, useRef, useState, type ChangeEvent } from "react";
 import BoardGrid from "./BoardGrid";
 import ConversationPanel from "./ConversationPanel";
 import MessageBar from "./MessageBar";
@@ -27,6 +27,8 @@ export default function AacApp({ initialBoard }: AacAppProps) {
   const [scenario, setScenario] = useState<Scenario | null>(null);
   const [history, setHistory] = useState<ConversationTurn[]>([]);
   const announcer = useAnnouncer();
+  const menuId = useId();
+  const menuRef = useRef<HTMLDivElement>(null);
 
   // The script is over once every partner line is out and the user has replied.
   const partnerTurns = history.filter((t) => t.speaker === "other").length;
@@ -72,6 +74,7 @@ export default function AacApp({ initialBoard }: AacAppProps) {
     const file = e.target.files?.[0];
     e.target.value = ""; // allow re-selecting the same file
     if (!file) return;
+    menuRef.current?.hidePopover();
     try {
       setBoard(parseObf(JSON.parse(await file.text())));
       setTokens([]);
@@ -85,6 +88,20 @@ export default function AacApp({ initialBoard }: AacAppProps) {
     }
   }
 
+  const settings = (
+    <>
+      <label className={styles.toggle}>
+        <input type="checkbox" checked={speakOnTap} onChange={(e) => setSpeakOnTap(e.target.checked)} />
+        Speak each tap
+      </label>
+      <label className={styles.fileButton}>
+        Load .obf board
+        {/* sr-only, not hidden: `hidden` removes the input from tab order. */}
+        <input type="file" accept=".obf,application/json" onChange={handleFile} className="sr-only" />
+      </label>
+    </>
+  );
+
   return (
     <main className={styles.app}>
       {/* Always mounted: screen readers only announce changes to a live region
@@ -95,8 +112,8 @@ export default function AacApp({ initialBoard }: AacAppProps) {
       <header className={styles.header}>
         <h1 className={styles.title}>{board.name}</h1>
         <div className={styles.options}>
-          <label className={styles.toggle}>
-            Scenario
+          <label className={styles.scenario}>
+            <span className={styles.scenarioLabel}>Scenario</span>
             <select
               className={styles.select}
               value={scenario?.id ?? ""}
@@ -110,19 +127,17 @@ export default function AacApp({ initialBoard }: AacAppProps) {
               ))}
             </select>
           </label>
-          <label className={styles.toggle}>
-            <input
-              type="checkbox"
-              checked={speakOnTap}
-              onChange={(e) => setSpeakOnTap(e.target.checked)}
-            />
-            Speak each tap
-          </label>
-          <label className={styles.fileButton}>
-            Load .obf board
-            {/* sr-only, not hidden: `hidden` removes the input from tab order. */}
-            <input type="file" accept=".obf,application/json" onChange={handleFile} className="sr-only" />
-          </label>
+          {/* Wide screens show the settings inline; phones tuck them into a
+              popover menu so the header fits on one line. CSS shows exactly
+              one of the two (the other is display: none, so screen readers
+              only ever see one). */}
+          <div className={styles.inlineSettings}>{settings}</div>
+          <button type="button" className={styles.menuButton} popoverTarget={menuId} aria-label="Options">
+            <span aria-hidden="true">⋯</span>
+          </button>
+          <div id={menuId} ref={menuRef} popover="auto" className={styles.menu}>
+            {settings}
+          </div>
         </div>
       </header>
       {loadError && (

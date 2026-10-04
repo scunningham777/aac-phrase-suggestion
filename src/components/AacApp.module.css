@@ -36,11 +36,43 @@
   font-size: 15px;
 }
 
+.scenario,
 .toggle {
   display: flex;
   align-items: center;
   gap: 6px;
   cursor: pointer;
+}
+
+/* Desktop: settings sit inline in the header row; the menu is unused. */
+.inlineSettings {
+  display: contents;
+}
+
+.menuButton {
+  display: none;
+}
+
+.menu {
+  /* Native popover: hidden until opened, then shown in the top layer. */
+  inset: auto;
+  top: 58px;
+  right: 10px;
+  margin: 0;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--foreground);
+  font-size: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+.menu:popover-open {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
 }
 
 .select {
@@ -71,4 +103,65 @@
   border-radius: 8px;
   background: var(--error-bg);
   color: var(--error-fg);
+}
+
+/* Phones: one-line header (scenario picker + options menu) and tighter
+   spacing, so the whole board fits without scrolling. */
+@media (max-width: 640px) {
+  .app {
+    padding: 10px;
+    gap: 10px;
+  }
+
+  .header {
+    flex-wrap: nowrap;
+  }
+
+  /* Visually hidden but still the page's heading for screen readers. */
+  .title,
+  .scenarioLabel {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+
+  .options {
+    flex: 1;
+    flex-wrap: nowrap;
+    gap: 8px;
+  }
+
+  .scenario {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .select {
+    width: 100%;
+    min-height: 44px;
+    font-size: 16px; /* 16px+ stops iOS zooming in on focus */
+  }
+
+  .inlineSettings {
+    display: none;
+  }
+
+  .menuButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface);
+    color: var(--foreground);
+    font: inherit;
+    font-size: 22px;
+    cursor: pointer;
+  }
 }

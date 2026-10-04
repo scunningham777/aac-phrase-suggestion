@@ -68,3 +68,14 @@
   font-weight: 600;
   cursor: pointer;
 }
+
+/* Phones: a slimmer footer leaves the board room to fit. */
+@media (max-width: 640px) {
+  .log {
+    padding: 8px;
+  }
+
+  .end {
+    padding: 4px 8px;
+  }
+}

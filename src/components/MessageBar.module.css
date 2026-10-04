@@ -10,9 +10,7 @@
   flex: 1 1 320px;
   min-height: 64px;
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  gap: 6px;
   padding: 10px 14px;
   border: 2px solid var(--border);
   border-radius: 12px;
@@ -27,6 +25,14 @@
 .placeholder {
   color: var(--muted);
   font-size: 16px;
+}
+
+.tokens {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
 }
 
 .token {
@@ -59,4 +65,71 @@
   background: var(--accent);
   border-color: var(--accent);
   color: var(--on-accent);
+}
+
+/* Desktop shows text labels; phones show icons (below). */
+.icon {
+  display: none;
+}
+
+/* Phones: message and controls share one row, controls as 48px icon buttons. */
+@media (max-width: 640px) {
+  .bar {
+    flex-wrap: nowrap;
+    gap: 6px;
+  }
+
+  .message {
+    flex: 1 1 auto;
+    min-width: 0;
+    min-height: 48px;
+    padding: 6px 10px;
+    font-size: 18px;
+  }
+
+  /* One line: newest words stay in view (MessageBar scrolls to the end) and
+     older ones slide off the left, instead of the bar growing taller. */
+  .tokens {
+    flex-wrap: nowrap;
+    overflow: hidden;
+  }
+
+  .token {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  .placeholder {
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .controls {
+    gap: 6px;
+  }
+
+  .controls button {
+    min-width: 48px;
+    min-height: 48px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .icon {
+    display: inline-flex;
+  }
+
+  /* Visually hidden, still the button's accessible name. */
+  .text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
 }
