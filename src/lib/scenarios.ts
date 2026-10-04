@@ -1,7 +1,11 @@
 // Scripted conversation partners for demoing suggestions without a live
-// back-and-forth. Each script is only the other person's lines, written to
-// make sense whatever the AAC user replies, and they lean on the sample
-// board's vocabulary so suggestions and board taps both have a role.
+// back-and-forth. Each script is only the other person's lines. Rules for
+// writing them, so every turn is answerable on the sample board:
+// - Ask yes/no questions or offer choices between board words ("eat, or
+//   drink?"); avoid open questions about times, places or activities, which
+//   the board has no words for.
+// - Never assume what the user just said ("Glad to hear it…") – the reply
+//   could be anything.
 
 export interface Scenario {
   id: string;
@@ -15,10 +19,10 @@ export const SCENARIOS: Scenario[] = [
     title: "Ordering at a restaurant",
     partnerLines: [
       "Hi there! What can I get you to drink?",
-      "Sure thing. Are you ready to order some food, or do you need a few minutes?",
-      "Great choice. Is there anything else I can get for you?",
+      "Sure thing. Are you ready to order some food?",
+      "Okay. Is there anything else I can get for you?",
       "Here you go. How is everything tasting?",
-      "Glad to hear it. Can I get you anything else before I bring the check?",
+      "Would you like any dessert?",
     ],
   },
   {
@@ -26,10 +30,10 @@ export const SCENARIOS: Scenario[] = [
     title: "Catching up with a friend",
     partnerLines: [
       "Hey! It's so good to see you. How have you been?",
-      "What have you been up to lately?",
-      "That sounds like a lot. Do you want to get something to eat this weekend?",
-      "Where do you want to go?",
-      "Perfect, it's a plan. See you then!",
+      "Do you want to get something to eat while we catch up?",
+      "Do you want to eat, or just get something to drink?",
+      "Do you like it here?",
+      "This was fun. Do you want to do it again next week?",
     ],
   },
   {
@@ -37,9 +41,10 @@ export const SCENARIOS: Scenario[] = [
     title: "Doctor's visit",
     partnerLines: [
       "Hi, come on in. How are you feeling today?",
-      "How long have you been feeling that way?",
+      "Have you been feeling this way for more than a week?",
       "Have you been sleeping okay?",
-      "Okay. Is there anything else you need help with today?",
+      "Are you eating and drinking okay?",
+      "Is there anything else you need help with today?",
       "Alright, I'll get you some water and be right back.",
     ],
   },
