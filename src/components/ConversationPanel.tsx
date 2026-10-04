@@ -19,7 +19,9 @@ export default function ConversationPanel({ history, finished, onRestart }: Conv
 
   return (
     <section className={styles.panel} aria-label="Conversation">
-      <ol className={styles.log} ref={logRef} aria-live="polite">
+      {/* Not a live region: AacApp announces partner lines itself, which also
+          works when this panel first appears. */}
+      <ol className={styles.log} ref={logRef}>
         {history.map((turn, i) => (
           <li key={i} className={turn.speaker === "user" ? styles.user : styles.other}>
             <span className={styles.speaker}>{turn.speaker === "user" ? "You" : "Partner"}</span>

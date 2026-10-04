@@ -25,6 +25,13 @@ export default function AacApp({ initialBoard }: AacAppProps) {
   const [loadError, setLoadError] = useState<string | null>(null);
   const [scenario, setScenario] = useState<Scenario | null>(null);
   const [history, setHistory] = useState<ConversationTurn[]>([]);
+  // What the screen reader should hear next; the id re-keys the text so a
+  // repeated line (e.g. the opener again after Restart) is still announced.
+  const [announcement, setAnnouncement] = useState({ id: 0, text: "" });
+
+  function announce(text: string) {
+    setAnnouncement((prev) => ({ id: prev.id + 1, text }));
+  }
 
   // The script is over once every partner line is out and the user has replied.
   const partnerTurns = history.filter((t) => t.speaker === "other").length;
@@ -41,6 +48,7 @@ export default function AacApp({ initialBoard }: AacAppProps) {
     setScenario(next);
     setTokens([]);
     setHistory(next ? [{ speaker: "other", text: next.partnerLines[0] }] : []);
+    if (next) announce(`Partner: ${next.partnerLines[0]}`);
   }
 
   function send() {
@@ -52,6 +60,7 @@ export default function AacApp({ initialBoard }: AacAppProps) {
     if (reply) turns.push({ speaker: "other", text: reply });
     setHistory((prev) => [...prev, ...turns]);
     setTokens([]);
+    announce(reply ? `Partner: ${reply}` : "End of scenario");
   }
 
   function addToMessage(text: string) {
@@ -82,6 +91,11 @@ export default function AacApp({ initialBoard }: AacAppProps) {
 
   return (
     <main className={styles.app}>
+      {/* Always mounted: screen readers only announce changes to a live region
+          that already exists, not one that appears with its content. */}
+      <div className="sr-only" role="status">
+        <span key={announcement.id}>{announcement.text}</span>
+      </div>
       <header className={styles.header}>
         <h1 className={styles.title}>{board.name}</h1>
         <div className={styles.options}>
