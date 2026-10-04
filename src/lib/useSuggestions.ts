@@ -30,6 +30,10 @@ export function useSuggestions(
   const body: SuggestionRequest = { currentTokens, history, boardVocabulary };
   const key = active ? JSON.stringify(body) : "";
 
+  // Once the message is cleared, forget the old result so it isn't shown
+  // (greyed out) while the first suggestions for the next message load.
+  if (!key && result) setResult(null);
+
   useEffect(() => {
     if (!key) return;
     const controller = new AbortController();
