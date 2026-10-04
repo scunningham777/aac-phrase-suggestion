@@ -1,6 +1,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
 import { z } from "zod";
+import { isSameOrigin, withinRateLimit } from "@/lib/guard";
 import { buildSuggestionPrompt, SUGGESTION_SYSTEM_PROMPT } from "@/lib/suggestionPrompt";
 import type { SuggestionRequest, SuggestionResponse } from "@/lib/types";
 
@@ -33,6 +34,11 @@ function errorResponse(status: number, error: string) {
 }
 
 export async function POST(request: Request) {
+  if (!isSameOrigin(request)) return errorResponse(403, "Forbidden.");
+  if (!(await withinRateLimit(request))) {
+    return errorResponse(429, "Too many requests – try again shortly.");
+  }
+
   const parsed = RequestSchema.safeParse(await request.json().catch(() => null));
   if (!parsed.success) return errorResponse(400, "Invalid suggestion request.");
   const req = parsed.data;

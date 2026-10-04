@@ -40,6 +40,7 @@ src/lib/types.ts              data model from the spec
 src/lib/suggestionPrompt.ts   system prompt + context formatting for suggestions
 src/lib/useSuggestions.ts     debounced, cancellable client for /api/suggest
 src/lib/scenarios.ts          scripted conversation partners for demo mode
+src/lib/guard.ts              same-origin check + rate limit for /api/suggest
 src/components/               AacApp (state), BoardGrid, MessageBar,
                               SuggestionBar, ConversationPanel
 src/app/page.tsx              reads + parses the sample board at build time
@@ -57,7 +58,14 @@ mid-request, the browser aborts and the abort is forwarded to the Anthropic
 call. The API key only ever exists on the server.
 
 Once deployed, `/api/suggest` is publicly reachable and spends your API
-credit – keep a monthly spend limit set in the Anthropic Console.
+credit, so it is guarded in layers (`src/lib/guard.ts`):
+
+- **Same-origin check** – requests must carry this site's own `Origin`, which
+  stops other websites from using the endpoint.
+- **Per-IP rate limit** – 30/minute and 500/day, via Upstash Redis. Active
+  only when an Upstash store is connected (see `.env.example`).
+- **Spend limit** – the API key belongs to a Console workspace with a monthly
+  cap, which bounds the worst case regardless.
 
 ## Demo scenarios
 
