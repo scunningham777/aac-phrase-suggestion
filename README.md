@@ -13,7 +13,7 @@ Full spec: [docs/SPEC.md](docs/SPEC.md)
 - [x] Message builder – tap to add, backspace, clear
 - [x] Text-to-speech via the browser's `SpeechSynthesis` API
 - [x] Contextual suggestion engine (Next.js route handler → Claude Haiku)
-- [ ] Demo scenario mode (scripted conversation context)
+- [x] Demo scenario mode (scripted conversation context)
 - [ ] Accessibility pass + Vercel deploy
 
 ## Getting started
@@ -38,7 +38,9 @@ src/lib/speech.ts             Web Speech API wrapper
 src/lib/types.ts              data model from the spec
 src/lib/suggestionPrompt.ts   system prompt + context formatting for suggestions
 src/lib/useSuggestions.ts     debounced, cancellable client for /api/suggest
-src/components/               AacApp (state), BoardGrid, MessageBar, SuggestionBar
+src/lib/scenarios.ts          scripted conversation partners for demo mode
+src/components/               AacApp (state), BoardGrid, MessageBar,
+                              SuggestionBar, ConversationPanel
 src/app/page.tsx              reads + parses the sample board at build time
 src/app/api/suggest/route.ts  POST → Claude Haiku (structured output) → 3–5 phrases
 ```
@@ -55,3 +57,13 @@ call. The API key only ever exists on the server.
 
 Once deployed, `/api/suggest` is publicly reachable and spends your API
 credit – keep a monthly spend limit set in the Anthropic Console.
+
+## Demo scenarios
+
+Pick a scenario (restaurant, catching up with a friend, doctor's visit) from
+the header to talk with a scripted partner. Their first line appears and
+suggestions immediately offer replies to it. **Send** speaks your message,
+adds it to the transcript, and brings up the partner's next line, so the last
+few turns of real conversation feed every suggestion request. Scripts live in
+`src/lib/scenarios.ts` – each is just the partner's lines, written to make
+sense whatever the user replies.

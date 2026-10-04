@@ -5,9 +5,11 @@ interface MessageBarProps {
   onSpeak: () => void;
   onBackspace: () => void;
   onClear: () => void;
+  /** When set (scenario mode), shows Send – speak and add to the conversation. */
+  onSend?: () => void;
 }
 
-export default function MessageBar({ tokens, onSpeak, onBackspace, onClear }: MessageBarProps) {
+export default function MessageBar({ tokens, onSpeak, onBackspace, onClear, onSend }: MessageBarProps) {
   const empty = tokens.length === 0;
 
   return (
@@ -30,7 +32,17 @@ export default function MessageBar({ tokens, onSpeak, onBackspace, onClear }: Me
         )}
       </button>
       <div className={styles.controls}>
-        <button type="button" className={styles.speak} onClick={onSpeak} disabled={empty}>
+        {onSend && (
+          <button type="button" className={styles.primary} onClick={onSend} disabled={empty}>
+            Send
+          </button>
+        )}
+        <button
+          type="button"
+          className={onSend ? undefined : styles.primary}
+          onClick={onSpeak}
+          disabled={empty}
+        >
           Speak
         </button>
         <button type="button" onClick={onBackspace} disabled={empty} aria-label="Delete last word">

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { HISTORY_TURNS } from "./suggestionPrompt";
 import type { ConversationTurn, SuggestionRequest, SuggestionResponse } from "./types";
 
 // Wait for a pause in tapping before asking, so a quick run of taps costs one
@@ -27,12 +28,18 @@ export function useSuggestions(
   const [result, setResult] = useState<SuggestionResult | null>(null);
 
   const active = currentTokens.length > 0 || history.length > 0;
-  const body: SuggestionRequest = { currentTokens, history, boardVocabulary };
+  const body: SuggestionRequest = {
+    currentTokens,
+    // Only the turns the prompt uses – keeps requests small and under the
+    // route's history cap however long the conversation runs.
+    history: history.slice(-HISTORY_TURNS),
+    boardVocabulary,
+  };
   const key = active ? JSON.stringify(body) : "";
 
-  // Once the message is cleared, forget the old result so it isn't shown
-  // (greyed out) while the first suggestions for the next message load.
-  if (!key && result) setResult(null);
+  // Once the message is cleared (or sent), forget the old result so it isn't
+  // shown (greyed out) while the first suggestions for the next message load.
+  if (result && result.key !== key && currentTokens.length === 0) setResult(null);
 
   useEffect(() => {
     if (!key) return;

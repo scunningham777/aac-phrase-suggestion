@@ -63,7 +63,7 @@
   cursor: default;
 }
 
-.controls .speak {
+.controls .primary {
   background: var(--accent);
   border-color: var(--accent);
   color: var(--on-accent);
