@@ -27,14 +27,13 @@ export default function ConversationPanel({ history, finished, onRestart }: Conv
           </li>
         ))}
       </ol>
-      {finished && (
-        <div className={styles.end}>
-          <span>End of scenario</span>
-          <button type="button" onClick={onRestart}>
-            Restart
-          </button>
-        </div>
-      )}
+      {/* Restart is always shown so it never disappears from under keyboard focus. */}
+      <div className={styles.end}>
+        <span>{finished ? "End of scenario" : ""}</span>
+        <button type="button" onClick={onRestart}>
+          Restart
+        </button>
+      </div>
     </section>
   );
 }

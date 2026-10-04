@@ -14,7 +14,8 @@ Full spec: [docs/SPEC.md](docs/SPEC.md)
 - [x] Text-to-speech via the browser's `SpeechSynthesis` API
 - [x] Contextual suggestion engine (Next.js route handler → Claude Haiku)
 - [x] Demo scenario mode (scripted conversation context)
-- [ ] Accessibility pass + Vercel deploy
+- [x] Accessibility pass (WCAG 2.2 AA via axe-core, plus keyboard focus and screen-reader fixes)
+- [ ] Vercel deploy (with rate limiting + origin check on `/api/suggest`)
 
 ## Getting started
 

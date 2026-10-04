@@ -110,7 +110,8 @@ export default function AacApp({ initialBoard }: AacAppProps) {
           </label>
           <label className={styles.fileButton}>
             Load .obf board
-            <input type="file" accept=".obf,application/json" onChange={handleFile} hidden />
+            {/* sr-only, not hidden: `hidden` removes the input from tab order. */}
+            <input type="file" accept=".obf,application/json" onChange={handleFile} className="sr-only" />
           </label>
         </div>
       </header>
@@ -133,7 +134,8 @@ export default function AacApp({ initialBoard }: AacAppProps) {
         onSpeak={() => speak(tokens.join(" "))}
         onBackspace={() => setTokens((prev) => prev.slice(0, -1))}
         onClear={() => setTokens([])}
-        onSend={scenario && !finished ? send : undefined}
+        onSend={scenario ? send : undefined}
+        sendDisabled={finished}
       />
 
       <SuggestionBar {...suggestions} onSelect={addToMessage} />

@@ -23,10 +23,6 @@
   cursor: pointer;
 }
 
-.message:disabled {
-  cursor: default;
-}
-
 .placeholder {
   color: var(--muted);
   font-size: 16px;
@@ -56,11 +52,6 @@
   font-weight: 600;
   cursor: pointer;
   touch-action: manipulation;
-}
-
-.controls button:disabled {
-  opacity: 0.45;
-  cursor: default;
 }
 
 .controls .primary {

@@ -25,13 +25,3 @@
   touch-action: manipulation;
   transition: opacity 120ms ease;
 }
-
-.chip:disabled {
-  opacity: 0.4;
-  cursor: default;
-}
-
-.chip:focus-visible {
-  outline: 3px solid var(--accent);
-  outline-offset: 2px;
-}
